@@ -1,0 +1,12 @@
+dependencies:
+- name: app-template
+  repository: oci://ghcr.io/bjw-s
+  version: 1.5.0
+- name: app-template
+  repository: oci://ghcr.io/bjw-s
+  version: 1.5.0
+- name: app-template
+  repository: oci://ghcr.io/bjw-s
+  version: 1.5.0
+digest: sha256:50b8a6ff56c371e1239c9cc037d1ba731d4758a750f4aeb1e7adc297d6f90969
+generated: "2023-06-13T21:01:04.524855+01:00"

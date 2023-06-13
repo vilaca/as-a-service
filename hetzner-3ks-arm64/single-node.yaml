@@ -1,0 +1,63 @@
+---
+hetzner_token: ...
+cluster_name: single-node
+kubeconfig_path: "./kubeconfig"
+k3s_version: v1.27.2+k3s1
+public_ssh_key_path: "~/.ssh/id_rsa.pub"
+private_ssh_key_path: "~/.ssh/id_rsa"
+use_ssh_agent: false
+ssh_allowed_networks:
+  - 0.0.0.0/0
+api_allowed_networks:
+  - 0.0.0.0/0
+private_network_subnet: 10.0.0.0/16
+schedule_workloads_on_masters: true
+image: rocky-9 # optional: default is ubuntu-22.04
+# autoscaling_image: 103908130 # optional, defaults to the `image` setting
+# snapshot_os: microos # otional: specified the os type when using a custom snapshot
+masters_pool:
+  instance_type: cax21
+  instance_count: 1
+  location: fsn1
+  # image: debian-11
+  # labels:
+  #   - key: purpose
+  #     value: blah
+  # taints:
+  #   - key: something
+  #     value: value1:NoSchedule
+# - name: big-autoscaled
+#   instance_type: cpx31
+#   instance_count: 2
+#   location: fsn1
+#   autoscaling:
+#     enabled: true
+#     min_instances: 0
+#     max_instances: 3
+# additional_packages:
+# - somepackage
+# post_create_commands:
+# - apt update
+# - apt upgrade -y
+# - apt autoremove -y
+# enable_encryption: true
+# existing_network: <specify if you want to use an existing network, otherwise one will be created for this cluster>
+# kube_api_server_args:
+# - arg1
+# - ...
+# kube_scheduler_args:
+# - arg1
+# - ...
+# kube_controller_manager_args:
+# - arg1
+# - ...
+# kube_cloud_controller_manager_args:
+# - arg1
+# - ...
+# kubelet_args:
+# - arg1
+# - ...
+# kube_proxy_args:
+# - arg1
+# - ...
+

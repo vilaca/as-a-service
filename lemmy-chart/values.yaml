@@ -1,0 +1,138 @@
+lemmy:
+  global:
+    fullnameOverride: lemmy
+
+  image:
+    repository: dessalines/lemmy
+    tag: 0.17.3-linux-arm64
+
+  service:
+    main:
+      ports:
+        http:
+          port: 8536
+
+  env:
+    RUST_LOG: "warn,lemmy_server=debug,lemmy_api=debug,lemmy_api_common=debug,lemmy_api_crud=debug,lemmy_apub=debug,lemmy_db_schema=debug,lemmy_db_views=debug,lemmy_db_views_actor=debug,lemmy_db_views_moderator=debug,lemmy_routes=debug,lemmy_utils=debug,lemmy_websocket=debug"
+    RUST_BACKTRACE: "full"
+
+  secrets:
+    config:
+      enabled: true
+      stringData:
+        config.hjson: |
+          {
+            setup: {
+              admin_username: "lemmyadmin"
+              admin_password: "lemmypass"
+              site_name: "mylemmyinstance"
+            }
+
+            hostname: "lemmy.mydomain.tld"
+            bind: "0.0.0.0"
+            port: 8536
+            tls_enabled: true
+
+            pictrs: {
+              url: "http://pictrs:8080/"
+            }
+
+            email: {
+              smtp_server: "localhost:25"
+              smtp_login: "string"
+              smtp_password: "string"
+              smtp_from_address: "noreply@example.com"
+              tls_type: "none"
+            }
+
+            database: {
+                user: "lemmy"
+                password: "lemmy"
+                host: "postgresql"
+                port: 5432
+                database: "lemmy"
+                pool_size: 1
+              }
+          }
+
+  persistence:
+    config:
+      enabled: true
+      name: lemmy-config
+      type: secret
+      mountPath: /config/config.hjson
+      subPath: config.hjson
+      readOnly: true
+
+lemmy-ui:
+  global:
+    fullnameOverride: lemmy-ui
+
+  image:
+    repository: dessalines/lemmy-ui
+    tag: 0.17.3-linux-arm64
+
+  service:
+    main:
+      ports:
+        http:
+          port: 1234
+
+  env:
+    LEMMY_UI_LEMMY_INTERNAL_HOST: "lemmy:8536"
+    LEMMY_UI_LEMMY_EXTERNAL_HOST: "lemmy.mydomain.tld"
+    LEMMY_HTTPS: "true"
+    LEMMY_UI_DEBUG: "true"
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      hosts:
+      - host: lemmy.mydomain.tld
+        paths:
+        - path: /
+      tls:
+        - secretName: chart-example-tls
+          hosts:
+          - lemmy.mydomain.tld
+
+pictrs:
+  global:
+    fullnameOverride: pictrs
+
+  image:
+    repository: asonix/pictrs
+    tag: 0.4.0-rc.3
+
+  env:
+    PICTRS__API_KEY: "API_KEY"
+    RUST_LOG: "debug"
+    RUST_BACKTRACE: "full"
+    PICTRS__MEDIA__VIDEO_CODEC: "vp9"
+    PICTRS__MEDIA__GIF__MAX_WIDTH: "256"
+    PICTRS__MEDIA__GIF__MAX_HEIGHT: "256"
+    PICTRS__MEDIA__GIF__MAX_AREA: "65536"
+    PICTRS__MEDIA__GIF__MAX_FRAME_COUNT: "400"
+
+  service:
+    main:
+      ports:
+        http:
+          port: 8080
+
+  persistence:
+    data:
+      enabled: true
+      type: pvc
+      mountPath: /mnt
+      # existingClaim:
+      accessMode: ReadWriteOnce
+      size: 10Gi
+
+  podSecurityContext:
+    runAsUser: 991
+    runAsGroup: 991
+    fsGroup: 991
+
