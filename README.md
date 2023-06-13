@@ -1,2 +1,1 @@
-# as-a-service
 infrastructure
