@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Minimal chart
+name: auto
+version: 0.0.0
