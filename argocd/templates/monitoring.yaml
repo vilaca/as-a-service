@@ -17,6 +17,10 @@ spec:
     helm:
       release-name: prometheus
   syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+      allowEmpty: true
     syncOptions:
     - ServerSideApply=true
     - CreateNamespace=true
