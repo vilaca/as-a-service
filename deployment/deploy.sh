@@ -1,5 +1,5 @@
 
-hetzner-k3s create -c single-node.yaml
+hetzner-k3s create -c single-node-arm64.yaml
 
 path=$(pwd)
 export KUBECONFIG="$path"/kubeconfig
