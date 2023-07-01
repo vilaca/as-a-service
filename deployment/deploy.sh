@@ -7,12 +7,13 @@ export KUBECONFIG="$path"/kubeconfig
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-kubectl rollout status deploy/argocd-server --timeout=5m
+kubectl rollout status deployment argocd-server -n argocd --timeout=5m
 kubectl port-forward svc/argocd-server -n argocd 8080:443 &
-sleep 15
+sleep 6
 
 export argo_host=localhost:8080
 argocd admin initial-password -n argocd
+echo Username is 'admin'
 argocd login "$argo_host"
 argocd cluster add single-node
 
@@ -23,3 +24,5 @@ argocd app create app-of-apps \
     --path argocd \
     --repo https://github.com/vilaca/as-a-service \
     --sync-policy auto
+
+echo Argocd UI ready https://"$argo_host"
