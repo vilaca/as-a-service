@@ -11,11 +11,11 @@ spec:
     namespace: ingress-nginx
     server: https://kubernetes.default.svc
   source:
-    chart: kube-prometheus-stack
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 47.0.0
+    chart: ingress-nginx/ingress-nginx
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    targetRevision: 4.7.1
     helm:
-      release-name: prometheus
+      release-name: ingress-nginx
       valueFiles:
         - ingress/ingress-nginx-annotations.yaml
   syncPolicy:
