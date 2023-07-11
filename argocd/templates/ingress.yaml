@@ -13,12 +13,21 @@ spec:
   source:
     chart: ingress-nginx/ingress-nginx
     repoURL: https://kubernetes.github.io/ingress-nginx
-    path: ingress
     targetRevision: 47.0.0
     helm:
       release-name: ingress-nginx
-      valueFiles:
-        - ingress-nginx-annotations.yaml
+      values: |
+        controller:
+          kind: DaemonSet
+          config:
+            use-proxy-protocol: "true"
+          service:
+            annotations:
+              load-balancer.hetzner.cloud/location: fsn1
+              load-balancer.hetzner.cloud/name: load-balancer-1
+              load-balancer.hetzner.cloud/use-private-ip: "true"
+              load-balancer.hetzner.cloud/uses-proxyprotocol: 'true'
+              load-balancer.hetzner.cloud/http-redirect-https: 'false'
   syncPolicy:
     automated:
       selfHeal: true
